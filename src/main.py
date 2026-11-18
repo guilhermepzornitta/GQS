@@ -1,6 +1,7 @@
 """Sistema de cadastro de pessoas."""
 
 from cadastro import CadastroPessoas
+from repositorio_pessoas_memoria import RepositorioPessoasMemoria
 
 def exibir_menu():
     """ Função para exibir o menu de opções """
@@ -142,7 +143,7 @@ def analisar_pessoa(cadastro_pessoas):
 
 def executar():
     """ Função principal para executar o sistema de cadastro de pessoas """
-    cadastro = CadastroPessoas()
+    cadastro = CadastroPessoas(RepositorioPessoasMemoria())
     opcao = 0
 
     while opcao != 6:

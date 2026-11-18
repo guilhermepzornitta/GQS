@@ -1,35 +1,28 @@
 """Gerenciamento do cadastro de pessoas."""
 
 from pessoa import Pessoa
+from repositorio_pessoas import RepositorioPessoas
+
 
 class CadastroPessoas:
-    """Mantém e gerencia o conjunto de pessoas cadastradas."""
+    """Regras de negócio do cadastro; o armazenamento é delegado."""
 
-    def __init__(self):
-        self.__pessoas = []
+    def __init__(self, repositorio: RepositorioPessoas):
+        self.__repositorio = repositorio
 
     def cadastrar(self, nome, idade, email):
         pessoa = Pessoa(nome, idade, email)
-        self.__pessoas.append(pessoa)
+        self.__repositorio.cadastrar(pessoa)
         return pessoa
 
     def buscarPorNome(self, nome):
-        for pessoa in self.__pessoas:
-            if pessoa.getNome() == nome:
-                return pessoa
-        return None
+        return self.__repositorio.buscar(nome)
 
     def listar(self):
-        return self.__pessoas
+        return self.__repositorio.listar()
 
     def alterar(self, nome, novo_nome, nova_idade, novo_email):
-        pessoa = self.buscarPorNome(nome)
-
-        if pessoa is None:
-            return None
-
-        pessoa.setNome(novo_nome)
-        pessoa.setIdade(nova_idade)
-        pessoa.setEmail(novo_email)
-
-        return pessoa
+        nova_pessoa = Pessoa(novo_nome, nova_idade, novo_email)
+        if self.__repositorio.alterar(nome, nova_pessoa):
+            return nova_pessoa
+        return None
